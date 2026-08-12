@@ -1,7 +1,0 @@
-<Solution>
-  <Project Path="MicroondasDigital.Console/MicroondasDigital.Console.csproj" />
-  <Project Path="MicroondasDigital.Domain/MicroondasDigital.Domain.csproj" />
-  <Project Path="MicroondasDigital.Infrastruture/MicroondasDigital.Infrastruture.csproj" />
-  <Project Path="MicroondasDigital.Tests/MicroondasDigital.Tests.csproj" />
-  <Project Path="MicroondasDigital.Web/MicroondasDigital.Web.csproj" Id="15755441-5ee0-41b0-8b92-9797336d1ccf" />
-</Solution>

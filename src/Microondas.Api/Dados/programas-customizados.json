@@ -1,0 +1,10 @@
+[
+  {
+    "Nome": "Lasanha",
+    "Alimento": "Lasanha congelada",
+    "TempoSegundos": 220,
+    "Potencia": 8,
+    "Caractere": "$",
+    "Instrucoes": ""
+  }
+]

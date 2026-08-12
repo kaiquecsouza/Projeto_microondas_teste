@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Micro-ondas Digital</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <header>
+    <h1>Micro-ondas Digital</h1>
+    <div id="statusAutenticacao" class="badge badge-off">Não autenticado</div>
+  </header>
+
+  <!-- ===================== AUTENTICAÇÃO (Nível 4) ===================== -->
+  <section id="painelAutenticacao" class="card">
+    <h2>Autenticação (Web API)</h2>
+    <div class="grid2">
+      <div>
+        <h3>Login</h3>
+        <label>Usuário <input id="loginUsuario" type="text" value="admin" /></label>
+        <label>Senha <input id="loginSenha" type="password" value="admin123" /></label>
+        <button id="btnLogin">Entrar</button>
+      </div>
+      <div>
+        <h3>Configurar credenciais</h3>
+        <label>Usuário <input id="cfgUsuario" type="text" /></label>
+        <label>Senha <input id="cfgSenha" type="password" /></label>
+        <button id="btnConfigurar">Salvar credenciais</button>
+        <small>A senha é persistida como hash SHA-256.</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAINEL PRINCIPAL ===================== -->
+  <main id="painelPrincipal" class="desabilitado">
+    <section class="card visor">
+      <div id="visorTempo" class="tempo">0:00</div>
+      <div id="visorPotencia" class="potencia">Potência: -</div>
+      <div id="visorPrograma" class="programa"></div>
+      <pre id="visorProgresso" class="progresso"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Aquecimento manual</h2>
+      <div class="entradas">
+        <label>Tempo (segundos) <input id="campoTempo" type="number" min="1" max="120" /></label>
+        <label>Potência (1 a 10) <input id="campoPotencia" type="number" min="1" max="10" /></label>
+      </div>
+
+      <div class="teclado">
+        <button class="tecla" data-num="1">1</button>
+        <button class="tecla" data-num="2">2</button>
+        <button class="tecla" data-num="3">3</button>
+        <button class="tecla" data-num="4">4</button>
+        <button class="tecla" data-num="5">5</button>
+        <button class="tecla" data-num="6">6</button>
+        <button class="tecla" data-num="7">7</button>
+        <button class="tecla" data-num="8">8</button>
+        <button class="tecla" data-num="9">9</button>
+        <button class="tecla" data-acao="limpar">C</button>
+        <button class="tecla" data-num="0">0</button>
+        <button class="tecla" data-acao="alvo">⇄</button>
+      </div>
+      <small id="alvoTeclado">Teclado digitando em: <strong>Tempo</strong> (⇄ alterna)</small>
+
+      <div class="botoes">
+        <button id="btnIniciar" class="primario">Iniciar / +30s</button>
+        <button id="btnPausar" class="secundario">Pausa / Cancelar</button>
+      </div>
+      <small>Iniciar sem informar tempo e potência = início rápido (30s, potência 10).</small>
+    </section>
+
+    <section class="card">
+      <h2>Programas de aquecimento</h2>
+      <div id="listaProgramas" class="lista-programas"></div>
+    </section>
+
+    <section class="card">
+      <h2>Cadastrar programa customizado</h2>
+      <div class="grid2">
+        <label>Nome* <input id="npNome" type="text" /></label>
+        <label>Alimento* <input id="npAlimento" type="text" /></label>
+        <label>Tempo (segundos)* <input id="npTempo" type="number" min="1" /></label>
+        <label>Potência (1 a 10)* <input id="npPotencia" type="number" min="1" max="10" /></label>
+        <label>Caractere* <input id="npCaractere" type="text" maxlength="1" /></label>
+        <label>Instruções (opcional) <input id="npInstrucoes" type="text" /></label>
+      </div>
+      <button id="btnCadastrar" class="primario">Cadastrar</button>
+      <small>O caractere não pode ser "." nem repetir o de outro programa.</small>
+    </section>
+  </main>
+
+  <div id="mensagem" class="mensagem"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

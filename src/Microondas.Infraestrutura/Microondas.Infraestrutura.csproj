@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Infraestrutura implementa as abstrações do domínio (persistência, segurança, logging).
+    Alvo net8.0 para usar System.Text.Json e as APIs de criptografia mais recentes já embutidas.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microondas.Dominio\Microondas.Dominio.csproj" />
+  </ItemGroup>
+
+</Project>

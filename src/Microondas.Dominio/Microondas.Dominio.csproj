@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    A camada de domínio tem como alvo o netstandard2.0, o que a torna consumível tanto por
+    hosts .NET Framework 4.6.1+ (atendendo ao requisito ".NET Framework 4.0 ou superior")
+    quanto por .NET 6/8 (interpretando "ou superior"). Ela não possui nenhuma dependência de
+    interface de usuário ou de framework web (requisito D: separação de camadas).
+  -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+
+</Project>
