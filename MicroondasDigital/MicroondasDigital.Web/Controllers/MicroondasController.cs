@@ -1,6 +1,7 @@
 ﻿using MicroondasDigital.Domain.Entities;
 using MicroondasDigital.Domain.Exceptions;
 using MicroondasDigital.Domain.Services;
+using MicroondasDigital.Infrastruture.Repositories;
 using MicroondasDigital.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -11,6 +12,12 @@ public class MicroondasController : Controller
 {
     private const string SessionKey = "MICROONDAS";
     private readonly ProgramaService _programaService = new ProgramaService();
+    private readonly IWebHostEnvironment _env;
+
+    public MicroondasController(IWebHostEnvironment env)
+    {
+        _env = env;
+    }
 
     private Microondas ObterMicroondas()
     {
@@ -35,6 +42,13 @@ public class MicroondasController : Controller
     {
         var json = JsonSerializer.Serialize(microondas);
         HttpContext.Session.SetString(SessionKey, json);
+    }
+
+    private ProgramaCustomizadoService MontarProgramaCustomizadoService()
+    {
+        var caminho = Path.Combine(_env.ContentRootPath, "App_Data", "programas-customizados.json");
+        var repository = new JsonProgramaRepository(caminho);
+        return new ProgramaCustomizadoService(repository);
     }
 
     public IActionResult Index()
@@ -97,21 +111,22 @@ public class MicroondasController : Controller
     [HttpPost]
     public IActionResult IniciarPrograma(int id)
     {
-        var programas = _programaService.ObterPreDefinido(id);
-        if(programas == null)
+        var programa = _programaService.ObterPreDefinido(id);
+        if (programa == null)
         {
             return NotFound();
         }
 
         var microondas = ObterMicroondas();
-        microondas.IniciarPrograma(programas.Tempo, programas.Potencia, programas.CaractereAquecimento);
+        microondas.IniciarPrograma(programa.Tempo, programa.Potencia, programa.CaractereAquecimento);
+        SalvarMicroondas(microondas);
 
         return Json(CriarViewModel(microondas));
     }
 
     private MicroondasModel CriarViewModel(Microondas m)
     {
-        return new MicroondasModel
+        var viewModel = new MicroondasModel
         {
             TempoRestante = m.TempoRestante,
             TempoFormatado = m.ObterTempoFormatado(),
@@ -119,5 +134,12 @@ public class MicroondasController : Controller
             Estado = m.Estado.ToString(),
             StringAquecimento = m.StringAquecimento
         };
+
+        var service = MontarProgramaCustomizadoService();
+        viewModel.ProgramasCustomizados = service.ListarTodos()
+            .Select(p => new ProgramaResumoModel { Id = p.Id, Nome = p.Nome })
+            .ToList();
+
+        return viewModel;
     }
 }

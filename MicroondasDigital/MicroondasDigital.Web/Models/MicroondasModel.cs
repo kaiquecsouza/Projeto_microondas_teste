@@ -10,4 +10,12 @@ public class MicroondasModel
     public string Estado { get; set; }
     public string StringAquecimento { get; set; }
     public string MensagemErro { get; set; }
+
+    public List<ProgramaResumoModel> ProgramasCustomizados { get; set; } = new();
+}
+
+public class ProgramaResumoModel
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = "";
 }
