@@ -15,6 +15,11 @@
     <button id="btnIniciar">Iniciar</button>
     <button id="btnRapido">Início rápido</button>
     <button id="btnPausar">Pausar / Cancelar</button>
+    <button class="programa" data-id="1">Pipoca</button>
+    <button class="programa" data-id="2">Leite</button>
+    <button class="programa" data-id="3">Carnes de boi</button>
+    <button class="programa" data-id="4">Frango</button>
+    <button class="programa" data-id="5">Feijão</button>
 </div>
 
 <hr />
@@ -78,5 +83,9 @@
                     $('#erro').text(x.responseJSON.mensagem);
                 });
         });
+
+        $('.programa').click(function () { 
+            $.post('@Url.Action("IniciarPrograma", "Microondas")', { id: $(this).data('id') }) 
+            .done(function (d) { atualizarTela(d); iniciarRelogio(); });});
     </script>
 }

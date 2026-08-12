@@ -1,5 +1,6 @@
 ﻿using MicroondasDigital.Domain.Entities;
 using MicroondasDigital.Domain.Exceptions;
+using MicroondasDigital.Domain.Services;
 using MicroondasDigital.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -9,6 +10,7 @@ namespace MicroondasDigital.Web.Controllers;
 public class MicroondasController : Controller
 {
     private const string SessionKey = "MICROONDAS";
+    private readonly ProgramaService _programaService = new ProgramaService();
 
     private Microondas ObterMicroondas()
     {
@@ -89,6 +91,21 @@ public class MicroondasController : Controller
         var microondas = ObterMicroondas();
         microondas.PausarOuCancelar();
         SalvarMicroondas(microondas);
+        return Json(CriarViewModel(microondas));
+    }
+
+    [HttpPost]
+    public IActionResult IniciarPrograma(int id)
+    {
+        var programas = _programaService.ObterPreDefinido(id);
+        if(programas == null)
+        {
+            return NotFound();
+        }
+
+        var microondas = ObterMicroondas();
+        microondas.IniciarPrograma(programas.Tempo, programas.Potencia, programas.CaractereAquecimento);
+
         return Json(CriarViewModel(microondas));
     }
 
