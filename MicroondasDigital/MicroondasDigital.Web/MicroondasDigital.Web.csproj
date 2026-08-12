@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroondasDigital.Domain\MicroondasDigital.Domain.csproj" />
+    <ProjectReference Include="..\MicroondasDigital.Infrastruture\MicroondasDigital.Infrastruture.csproj" />
+  </ItemGroup>
+
+</Project>

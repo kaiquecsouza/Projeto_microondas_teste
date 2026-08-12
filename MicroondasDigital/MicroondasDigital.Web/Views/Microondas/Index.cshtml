@@ -1,0 +1,82 @@
+﻿@model MicroondasDigital.Web.Models.MicroondasModel
+@{
+    ViewBag.Title = "Micro-ondas Digital";
+}
+
+<h2>Micro-ondas Digital</h2>
+
+<div>
+    <label>Tempo (segundos)</label>
+    <input id="tempo" type="number" min="1" max="120" value="30" />
+
+    <label>Potência (1 a 10)</label>
+    <input id="potencia" type="number" min="1" max="10" value="10" />
+
+    <button id="btnIniciar">Iniciar</button>
+    <button id="btnRapido">Início rápido</button>
+    <button id="btnPausar">Pausar / Cancelar</button>
+</div>
+
+<hr />
+
+<div><strong>Tempo:</strong> <span id="displayTempo">@Model.TempoFormatado</span></div>
+<div><strong>Potência:</strong> <span id="displayPotencia">@Model.PotenciaAtual</span></div>
+<div><strong>Estado:</strong> <span id="displayEstado">@Model.Estado</span></div>
+<pre id="aquecimento">@Model.StringAquecimento</pre>
+<div id="erro" style="color:red"></div>
+
+@section scripts
+{
+    <script>
+        var timer = null;
+
+        function atualizarTela(d) {
+            $('#displayTempo').text(d.tempoFormatado);
+            $('#displayPotencia').text(d.potenciaAtual);
+            $('#displayEstado').text(d.estado);
+            $('#aquecimento').text(d.stringAquecimento);
+
+            if (d.estado === 'Concluido' || d.estado === 'Parado' || d.estado === 'Pausado') {
+                if (timer) {
+                    clearInterval(timer);
+                    timer = null;
+                }
+            }
+        }
+
+        function iniciarRelogio() {
+            if (timer) return;
+            timer = setInterval(function () {
+                $.post('@Url.Action("ProcessarSegundo", "Microondas")')
+                    .done(atualizarTela);
+            }, 1000);
+        }
+
+        $('#btnIniciar').click(function () {
+            $('#erro').text('');
+            $.post('@Url.Action("Iniciar", "Microondas")', {
+                tempo: $('#tempo').val(),
+                potencia: $('#potencia').val()
+            })
+                .done(function (d) {
+                    atualizarTela(d);
+                    iniciarRelogio();
+                })
+                .fail(function (x) {
+                    $('#erro').text(x.responseJSON.mensagem);
+                });
+        });
+
+        $('#btnRapido').click(function () {
+            $('#erro').text('');
+            $.post('@Url.Action("InicioRapido", "Microondas")')
+                .done(function (d) {
+                    atualizarTela(d);
+                    iniciarRelogio();
+                })
+                .fail(function (x) {
+                    $('#erro').text(x.responseJSON.mensagem);
+                });
+        });
+    </script>
+}
